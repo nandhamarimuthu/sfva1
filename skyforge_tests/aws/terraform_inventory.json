@@ -1,0 +1,86 @@
+{
+  "region": "eu-west-2",
+  "services": [
+    "ec2",
+    "iam",
+    "lambda",
+    "logs",
+    "s3",
+    "sqs"
+  ],
+  "resources": [
+    {
+      "service": "ec2",
+      "type": "aws_instance",
+      "address": "aws_instance.oversized",
+      "name": "oversized-instance",
+      "file": "terraform/main.tf",
+      "line": 41,
+      "config": {
+        "instance_type": "m7i.4xlarge"
+      }
+    },
+    {
+      "service": "s3",
+      "type": "aws_s3_bucket",
+      "address": "aws_s3_bucket.artifacts",
+      "name": "artifacts-s3-bucket",
+      "file": "terraform/main.tf",
+      "line": 60,
+      "config": {
+        "versioning": true
+      }
+    },
+    {
+      "service": "sqs",
+      "type": "aws_sqs_queue",
+      "address": "aws_sqs_queue.work",
+      "name": "work-sqs-queue",
+      "file": "terraform/main.tf",
+      "line": 68,
+      "config": {
+        "fifo": false,
+        "visibility_timeout": "180"
+      }
+    },
+    {
+      "service": "lambda",
+      "type": "aws_lambda_function",
+      "address": "aws_lambda_function.worker",
+      "name": "worker-lambda-function",
+      "file": "terraform/main.tf",
+      "line": 75,
+      "config": {
+        "runtime": "python3.12",
+        "handler": "handler.lambda_handler",
+        "memory_size": "3008",
+        "timeout": "900"
+      }
+    },
+    {
+      "service": "logs",
+      "type": "aws_cloudwatch_log_group",
+      "address": "aws_cloudwatch_log_group.lambda",
+      "name": "lambda-cloudwatch-log-group",
+      "file": "terraform/main.tf",
+      "line": 101,
+      "config": {
+        "retention_in_days": null
+      }
+    },
+    {
+      "service": "iam",
+      "type": "aws_iam_role",
+      "address": "aws_iam_role.lambda",
+      "name": "lambda-iam-role",
+      "file": "terraform/iam.tf",
+      "line": 1,
+      "config": {}
+    }
+  ],
+  "unsupported_resource_types": {
+    "aws_security_group": 1,
+    "aws_lambda_event_source_mapping": 1,
+    "aws_iam_role_policy": 1
+  }
+}
